@@ -1,0 +1,258 @@
+programa
+{
+	
+	funcao inicio()
+	{
+		const inteiro max = 21, limite = 20
+		
+		inteiro opcao = 0, i = 0, quantidade, posicao = 20
+		cadeia nome_do_produto, nome_do_fornecedor6
+		
+		real valorvenda =0.0, vendatotal=0.0
+		
+		inteiro quant[max]
+		real precounid[max]
+		cadeia nomesp[max], nomesf[max], pausa
+
+
+		para( i=0; i<max; i++)
+		{
+			nomesp[i] = "x"
+			quant[i] = 0
+		}
+
+
+
+	
+		faca
+		{
+			escreva("\nEscolha Uma Opção Para o Programa de Estoque executar: \n1. Cadastrar Produto\n2. Listar Produtos\n3. Adicionar Produtos\n4. Efetuar Venda\n5. Excluir Produto\n6. Encerrar Programa\n")
+			leia(opcao)
+			escolha(opcao)
+			{
+				caso 1:
+
+					escreva("\n\n===TELA DE CADASTRO===")
+					escreva("\nEscolha uma posição(i) de 1 a 20 para cadastrar o produto\n")
+					leia(i)
+					faca
+					{
+						se(i<1 ou i>20)
+						{
+							escreva("\nVALOR INVÁLIDO, DIGITE A POSIÇÃO A INSERIR O PRODUT\nO")
+							leia(i)
+						}
+					}enquanto(i<1 ou i>20)
+					i= i-1
+					posicao = i
+					escreva("\nTELA DE CADASTRO\n\nInsira as seguintes informações: Nome do produto  \n")
+	
+					ler_nomesp(nomesp,posicao, limite)
+				
+		
+					escreva("\nInsira as seguintes informações: Quantidade  \n")
+					leia(quant[i])
+					enquanto(quant[i] <0)
+					{
+						escreva("\nQuantidade Inválida! Digite novamente, mas uma quantidade inteira e positiva!  \n")
+						leia(quant[i])
+					}
+					
+					escreva("\nInsira as seguintes informações: Valor Unitário em R$  \n")
+					leia(precounid[i])
+					enquanto(precounid[i] <0)
+					{
+						escreva("\nQuantidade Inválida! Digite novamente, mas uma quantidade real e positiva!  \n")
+						leia(precounid[i])
+					}
+					escreva("\nInsira as seguintes informações: Nome do Fornecedor  \n")
+					leia(nomesf[i])
+
+					i = 0
+					escreva("\nDigite qualquer botão para voltar ao menu\n")
+					leia(pausa)
+				pare
+					
+				caso 2:
+				
+					listar(nomesp, quant, precounid, nomesf, limite)
+					escreva("\nDigite qualquer botão para voltar ao menu\n")
+					leia(pausa)
+				pare
+				
+				caso 3:
+					
+					escreva("\n===Tela de Adição de Produtos===\nDigite o nome do produto que deseja localizar:\n")
+					leia(nome_do_produto)
+					posicao = localizar( nomesp, quant, nome_do_produto, limite)
+					enquanto(posicao == -1)
+					{
+						escreva("\nProduto não encontrado, digite o nome novamente\n")
+						leia(nome_do_produto)
+						posicao = localizar( nomesp,  quant, nome_do_produto,limite)
+					}
+					escreva("Digite quantos elementos deseja adicionar: \n")
+					leia(quantidade)
+					quant[posicao]= quant[posicao]+quantidade
+					escreva("\nDigite qualquer botão para voltar ao menu\n")
+					leia(pausa)
+					
+
+
+					
+				pare
+				
+				caso 4: 
+					escreva("===Tela de Venda de Produtos===\nDigite o nome do produto que deseja localizar:\n")
+					leia(nome_do_produto)
+					posicao = localizar( nomesp, quant, nome_do_produto, limite)
+					enquanto(posicao == -1)
+					{
+						escreva("\nProduto não encontrado, digite o nome novamente\n")
+						leia(nome_do_produto)
+						posicao = localizar( nomesp,  quant, nome_do_produto,limite)
+					}
+					escreva("Digite quantos elementos deseja vender: \n")
+					leia(quantidade)
+					enquanto((quant[posicao]-quantidade)<0)
+					{
+						escreva("\nValor Inválido")
+						escreva("\nDigite quantos elementos deseja vender: \n")
+						leia(quantidade)
+					}
+					quant[posicao]= quant[posicao]-quantidade
+					valorvenda = precounid[posicao]*quantidade
+					vendatotal = vendatotal + valorvenda
+					escreva("\nvalor da venda de:",nomesp[posicao]," X",quantidade,": ",valorvenda)
+					escreva("\nDigite qualquer botão para voltar ao menu\n")
+					leia(pausa)
+					
+				pare
+
+
+				
+				caso 5:
+					escreva("\ndigite o nome do produto com quantidade 0 que deseja excluir\n")
+					leia(nome_do_produto)
+					posicao = localizar( nomesp, quant, nome_do_produto, limite)
+					enquanto(posicao == -1)
+					{
+						escreva("\nProduto não encontrado, digite o nome novamente\n")
+						leia(nome_do_produto)
+						posicao = localizar( nomesp,  quant, nome_do_produto,limite)
+					}
+					se(quant[posicao] <= 0)
+					{
+						para(i = posicao; i<limite; i++)
+						{
+							nomesp[i] = nomesp[i+1]
+							quant[i] = quant[i+1]
+							precounid[i] = precounid[i+1]
+							nomesf[i] = nomesf[i+1]
+						}
+						escreva("\n\nExclusão Realizada Com SUCESSO!!\n")
+					}
+					senao
+					{
+						escreva("este produto não pode ser excluído porque aindá possui unidades à venda.\n Tente novamente depois de vender todas as unidades do produto.\n")
+						
+					}
+					
+					escreva("\nDigite qualquer botão para voltar ao menu\n")
+					leia(pausa)
+
+				
+				pare
+
+
+
+				
+				caso 6:
+
+					escreva("===RELATÓRIO FINAL ===")
+					listar(nomesp, quant, precounid, nomesf, limite)
+					escreva("\n\nValor adquirido por vender itens nessa sessão:", vendatotal,"\n Digite qualquer botão para encerrar")
+					leia(pausa)
+					
+					retorne
+				
+				caso contrario:
+				escreva("\nOPÇÃO INCORRETA, APERTE QUALQUER TECLA PARA VOLTAR AO MENU INICIAL\n")
+				leia(pausa)
+
+			}
+		}enquanto(opcao != 6)
+	}
+
+
+	funcao inteiro localizar(cadeia nomesp[], inteiro quant[], cadeia nomep, inteiro limite)
+	{
+		inteiro i = 0
+		para(i=0;i<limite;i++)
+		{
+			se(nomesp[i] == nomep)
+			{
+				retorne i
+			}
+				
+		}
+		retorne -1
+	}
+
+
+
+		
+
+	funcao cadeia ler_nomesp(cadeia nomesp[],inteiro posicao,inteiro limite)
+	{	
+		cadeia nome = "vazio"
+		leia(nome)
+		para(inteiro i= 0; i<limite; i++)
+		{
+			faca
+			{
+				se(nomesp[i] == nome)
+				{
+					escreva("ESTE NOME JÁ ESTÁ EM USO\nINSIRA OUTRO NOME")
+					leia(nome)
+				}
+			}enquanto(nomesp[i] == nome)
+		}
+		nomesp[posicao] = nome
+		retorne nome	
+	}
+
+	funcao listar(cadeia nomesp[], inteiro quant[],real precounid[],cadeia nomesf[],inteiro limite)
+	{
+		para(inteiro i = 0; i< limite; i++)
+		{
+			se(nomesp[i] == "x")
+			{
+				escreva("\nCADASTRO VAZIO\n")
+			}
+			senao
+			{
+				escreva("\n Posição N°",i+1,":\t",nomesp[i],"\nQuantidade: ",quant[i],"\t Valor Unitário: ",precounid[i],"\nNome do Fornecedor: ",nomesf[i],"\n")
+				
+			}
+				
+			
+		}
+	}
+
+
+
+//OBRIGADO PELAS AULAS PROFESSOR IGOR!! APRENDI UM MONTÃO (°w°)
+
+}
+/* $$$ Portugol Studio $$$ 
+ * 
+ * Esta seção do arquivo guarda informações do Portugol Studio.
+ * Você pode apagá-la se estiver utilizando outro editor.
+ * 
+ * @POSICAO-CURSOR = 6035; 
+ * @PONTOS-DE-PARADA = ;
+ * @SIMBOLOS-INSPECIONADOS = ;
+ * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
+ * @FILTRO-ARVORE-TIPOS-DE-SIMBOLO = variavel, vetor, matriz, funcao;
+ */
